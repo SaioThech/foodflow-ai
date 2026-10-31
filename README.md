@@ -6,109 +6,166 @@
 
 ## 🎯 Objetivo
 
-Construir uma plataforma de dados e Inteligência Artificial inspirada em problemas comuns de marketplaces de delivery: previsão de cancelamento, análise de demanda, tempo de entrega, comportamento de clientes e análise de avaliações.
+Construir uma solução end-to-end inspirada em problemas comuns de marketplaces de delivery: análise operacional, previsão de cancelamento, NLP de avaliações e uma base arquitetural para RAG e serving de modelos.
 
-## 🧠 O que este projeto demonstra
+## 🧠 Stack e competências demonstradas
 
-- Geração e organização de dados sintéticos
-- Python e Pandas
-- Análise exploratória de dados (EDA)
-- Engenharia de atributos (feature engineering)
-- Machine Learning
-- NLP e análise de sentimento
-- Previsão de cancelamento de pedidos
-- Previsão de tempo de entrega
-- LLM/RAG como evolução do projeto
-- Boas práticas de engenharia e reprodutibilidade
+- Python + Pandas + NumPy
+- Geração de dados sintéticos reprodutíveis
+- EDA e métricas de negócio
+- Feature engineering e pipelines de pré-processamento
+- Machine Learning com scikit-learn
+- Avaliação com Precision, Recall, F1 e ROC-AUC
+- NLP com TF-IDF + Logistic Regression
+- Inferência opcional com Hugging Face Transformers
+- Retrieval para arquitetura RAG
+- API REST com FastAPI
+- Docker
+- Testes automatizados
+- GitHub Actions / CI
 
-## 🏗️ Arquitetura planejada
+## 🏗️ Arquitetura
 
 ```text
 Dados sintéticos
       ↓
 Python + Pandas
       ↓
-EDA + Feature Engineering
+EDA + métricas
       ↓
-Machine Learning ───→ Previsão de cancelamento
+ML ───────────────→ Previsão de cancelamento
       ↓
-NLP ────────────────→ Sentimento das avaliações
+NLP ───────────────→ Sentimento das avaliações
       ↓
-LLM + RAG ──────────→ Assistente FoodFlow AI
+Retriever ─────────→ Contexto para RAG
       ↓
-API + MLOps ────────→ Sistema de IA em produção
+FastAPI ───────────→ Serving de inferência
+      ↓
+Docker + CI ───────→ Operação reproduzível
 ```
 
-## 📊 Dados
+Veja também [`docs/architecture.md`](docs/architecture.md).
 
-O gerador cria um cenário fictício de delivery com:
+## 📊 Dados sintéticos
 
-- clientes
-- restaurantes
-- entregadores
-- pedidos
-- pagamentos
-- avaliações
+O gerador cria:
 
-A geração é determinística por seed, permitindo reproduzir os mesmos dados.
+- 5.000 clientes
+- 300 restaurantes
+- 800 entregadores
+- 30.000 pedidos
+- pagamentos associados aos pedidos
+- avaliações de clientes
 
-### Relações
+Os dados são gerados localmente e não são versionados no GitHub.
 
-```text
-customers 1 ─── N orders N ─── 1 restaurants
-                    │
-                    └────────── N ─── 1 couriers
-                    │
-                    └────────── 1 ─── 1 payments
-                    │
-                    └────────── 0/1 ─── reviews
-```
-
-## 🚀 Como executar
-
-```bash
-python -m venv .venv
-```
-
-Windows:
-
-```bash
-.venv\Scripts\activate
-```
-
-Instale as dependências:
-
-```bash
-pip install -r requirements.txt
-```
-
-Gere os dados:
+### Gerar os dados
 
 ```bash
 python data/generate_data.py
 ```
 
-Execute a análise:
+## 🤖 Machine Learning
+
+O primeiro modelo prevê a probabilidade de cancelamento usando informações disponíveis antes do desfecho do pedido, como horário, categoria, valor, distância, tempo de preparo, trânsito e forma de pagamento.
 
 ```bash
-python src/eda.py
+python src/train_cancellation.py
+python src/evaluate_cancellation.py
 ```
 
-## 🔬 Próximas etapas de AI
+As métricas são gravadas em `reports/cancellation_metrics.json` localmente.
 
-1. EDA completa e dashboard de métricas
-2. Modelo de classificação para cancelamento
-3. Modelo de regressão para tempo de entrega
-4. NLP para avaliações
-5. Modelo publicado no Hugging Face
-6. Assistente com LLM + RAG
-7. API de inferência
-8. Docker e CI/CD
-9. Monitoramento de modelos
+## 🗣️ NLP
+
+Baseline de sentimento:
+
+```bash
+python src/sentiment.py
+```
+
+Versão opcional com Hugging Face:
+
+```bash
+pip install -r requirements-optional.txt
+python src/nlp/huggingface_sentiment.py
+```
+
+## 🔎 RAG
+
+A camada `src/rag/` recupera avaliações semanticamente relevantes usando TF-IDF e similaridade de cosseno. Ela foi estruturada para receber posteriormente um LLM e produzir respostas fundamentadas nas evidências recuperadas.
+
+```bash
+python src/rag/qa.py
+```
+
+## 🌐 API
+
+Depois de gerar os dados e treinar o modelo:
+
+```bash
+uvicorn api.main:app --reload
+```
+
+Endpoints principais:
+
+- `GET /health`
+- `POST /predict/cancellation`
+- documentação automática em `/docs`
+
+## 🐳 Docker
+
+```bash
+docker build -t foodflow-ai .
+docker run -p 8000:8000 foodflow-ai
+```
+
+## 🧪 Testes
+
+```bash
+pytest -q
+```
+
+O GitHub Actions também executa testes, geração dos dados, EDA, treinamento do modelo e baseline de NLP.
+
+## 📁 Estrutura
+
+```text
+foodflow-ai/
+├── .github/workflows/ci.yml
+├── api/
+├── data/
+│   ├── generate_data.py
+│   └── README.md
+├── docs/
+├── models/
+├── reports/
+├── src/
+│   ├── nlp/
+│   ├── rag/
+│   ├── eda.py
+│   ├── sentiment.py
+│   ├── train_cancellation.py
+│   ├── evaluate_cancellation.py
+│   └── predict_cancellation.py
+├── tests/
+├── Dockerfile
+├── requirements.txt
+└── requirements-optional.txt
+```
+
+## 🚀 Próximas evoluções
+
+- publicar um modelo no Hugging Face
+- transformar o retriever em RAG completo com LLM
+- criar notebook pronto para Kaggle
+- adicionar modelo de previsão de tempo de entrega
+- incluir monitoramento e tracking de experimentos
+- disponibilizar uma demonstração web
 
 ## ⚠️ Dados sintéticos
 
-Este projeto não utiliza dados privados, A empresa **FoodFlow** é fictícia e foi criada exclusivamente para fins educacionais e de portfólio.
+A empresa **FoodFlow** é fictícia e foi criada exclusivamente para fins educacionais e de portfólio. Nenhum dado privado ou operacional real é utilizado.
 
 ## 👩🏽‍💻 Autora
 
