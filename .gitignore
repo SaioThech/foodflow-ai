@@ -10,5 +10,6 @@ venv/
 
 data/generated/*.csv
 reports/*.csv
+reports/*.json
 reports/*.png
 models/*.joblib
