@@ -1,0 +1,10 @@
+# NLP/Transformers
+transformers>=4.45,<5
+torch>=2.2,<3
+sentence-transformers>=3,<6
+
+# API production
+httpx>=0.27,<1
+
+# Experiment tracking
+mlflow>=2.15,<4
