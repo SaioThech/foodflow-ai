@@ -40,5 +40,8 @@ jobs:
       - name: Evaluate cancellation model
         run: python src/evaluate_cancellation.py
 
+      - name: Train delivery time model
+        run: python src/train_delivery_time.py
+
       - name: Run NLP baseline
         run: python src/sentiment.py
