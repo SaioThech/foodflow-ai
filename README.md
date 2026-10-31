@@ -1,30 +1,29 @@
-# 🍔 FoodFlow AI
+# 🧠 FoodFlow AI
 
-### Plataforma fictícia de delivery para desenvolvimento de soluções de Data & AI
+### Sistema de Engenharia de Inteligência Artificial para análise de dados e aplicações de ML, NLP e LLM
 
-> Projeto 100% sintético criado para portfólio de **AI Engineer**. Os dados, clientes, restaurantes, entregadores e pedidos são fictícios e não representam nenhuma empresa real.
+> Projeto 100% sintético criado para portfólio de **AI Engineer**. Os dados são gerados localmente e não representam uma empresa ou operação real.
 
 ## 🎯 Objetivo
 
-Construir uma solução end-to-end inspirada em problemas comuns de marketplaces de delivery: análise operacional, previsão de cancelamento, previsão de tempo de entrega, NLP, RAG e serving de modelos.
+Construir um sistema end-to-end que demonstre competências de Engenharia de IA: geração e preparação de dados, análise exploratória, feature engineering, treinamento e avaliação de modelos, NLP, recuperação de informação, RAG, integração com LLMs e serving por API.
 
-## 🧠 Stack e competências
+## 🧠 Stack técnica
 
-- Python + Pandas + NumPy
-- Geração de dados sintéticos reprodutíveis
-- EDA e métricas de negócio
+- Python
+- Pandas + NumPy
+- Scikit-learn
 - Feature engineering e pipelines de pré-processamento
-- Machine Learning com scikit-learn
 - Classificação e regressão
 - Precision, Recall, F1, ROC-AUC, MAE, RMSE e R²
-- NLP com TF-IDF + Logistic Regression
+- NLP com TF-IDF
 - Transformers com Hugging Face
-- Retrieval + RAG com LLM opcional
-- API REST com FastAPI
+- Retrieval + RAG
+- LLM opcional
+- FastAPI
 - Docker
-- Testes automatizados
+- Pytest
 - GitHub Actions / CI
-- Notebook preparado para Kaggle
 
 ## 🏗️ Arquitetura
 
@@ -37,24 +36,24 @@ EDA + Feature Engineering
       ↓
  ┌───────────────┬────────────────┐
  ↓               ↓                ↓
-ML cancelamento  ML entrega      NLP
+Classificação  Regressão         NLP
  ↓               ↓                ↓
  └───────────────┴────────────────┘
                  ↓
-          Retriever / RAG
+       Retrieval / RAG
                  ↓
-             LLM opcional
+            LLM opcional
                  ↓
              FastAPI
                  ↓
-           Docker + CI
+          Docker + CI
 ```
 
 Veja [`docs/architecture.md`](docs/architecture.md).
 
 ## 📊 Dados sintéticos
 
-O gerador cria 5.000 clientes, 300 restaurantes, 800 entregadores, 30.000 pedidos, pagamentos e avaliações. Os dados são gerados localmente e não são versionados.
+O gerador cria um conjunto controlado de dados para experimentação de Machine Learning e NLP. Os arquivos gerados localmente não são versionados.
 
 ```bash
 python data/generate_data.py
@@ -62,20 +61,20 @@ python data/generate_data.py
 
 ## 🤖 Machine Learning
 
-### Cancelamento
+### Classificação
 
 ```bash
 python src/train_cancellation.py
 python src/evaluate_cancellation.py
 ```
 
-### Tempo de entrega
+### Regressão
 
 ```bash
 python src/train_delivery_time.py
 ```
 
-As métricas e modelos são gerados localmente e ignorados pelo Git.
+Os modelos e relatórios gerados localmente são ignorados pelo Git.
 
 ## 🗣️ NLP e Transformers
 
@@ -94,7 +93,7 @@ python src/nlp/huggingface_sentiment.py
 
 ## 🔎 RAG + LLM
 
-A primeira etapa recupera avaliações relevantes com TF-IDF. A segunda etapa pode enviar o contexto recuperado para um modelo generativo opcional.
+A primeira etapa recupera documentos relevantes usando TF-IDF. A segunda etapa pode enviar o contexto recuperado para um modelo generativo opcional.
 
 Somente recuperação:
 
@@ -112,7 +111,7 @@ Depois de gerar os dados e treinar o modelo:
 uvicorn api.main:app --reload
 ```
 
-Endpoints: `GET /health` e `POST /predict/cancellation`. A documentação fica em `/docs`.
+Endpoints principais: `GET /health` e `POST /predict/cancellation`. A documentação fica disponível em `/docs`.
 
 ## 🐳 Docker
 
@@ -127,11 +126,11 @@ docker run -p 8000:8000 foodflow-ai
 pytest -q
 ```
 
-O GitHub Actions valida sintaxe, executa testes, gera dados, roda EDA, treina e avalia os modelos e executa o baseline de NLP.
+O GitHub Actions valida a sintaxe, executa testes automatizados, gera dados e executa etapas de análise, treinamento, avaliação e NLP. Workflows desse tipo permitem automatizar build e testes a cada alteração do repositório. citeturn965697search0turn965697search1
 
 ## 📓 Kaggle
 
-O notebook [`kaggle/01_foodflow_ml.ipynb`](kaggle/01_foodflow_ml.ipynb) apresenta o fluxo de análise e ML em formato pronto para adaptação/publicação no Kaggle.
+O notebook [`kaggle/01_foodflow_ml.ipynb`](kaggle/01_foodflow_ml.ipynb) apresenta o fluxo de análise e Machine Learning para experimentação.
 
 ## 📁 Estrutura
 
@@ -159,23 +158,23 @@ foodflow-ai/
 └── requirements-optional.txt
 ```
 
-## 🚀 Evidências de portfólio
+## 🚀 Evidências técnicas
 
 - Dados → `data/generate_data.py`
-- Analytics → `src/eda.py`
+- Analytics/EDA → `src/eda.py`
 - Classificação → `src/train_cancellation.py`
 - Regressão → `src/train_delivery_time.py`
 - NLP → `src/sentiment.py`
 - Transformers → `src/nlp/huggingface_sentiment.py`
 - RAG → `src/rag/`
 - API → `api/main.py`
-- MLOps/CI → `.github/workflows/ci.yml`
-- Kaggle → `kaggle/01_foodflow_ml.ipynb`
-- Artigo técnico → `docs/article.md`
+- CI → `.github/workflows/ci.yml`
+- Notebook → `kaggle/01_foodflow_ml.ipynb`
+- Documentação técnica → `docs/article.md`
 
 ## ⚠️ Dados sintéticos
 
-A empresa **FoodFlow** é fictícia e foi criada exclusivamente para fins educacionais e de portfólio. Nenhum dado privado ou operacional real é utilizado.
+O nome **FoodFlow** identifica apenas o ambiente fictício utilizado neste projeto. Nenhum dado privado ou operacional real é utilizado.
 
 ## 👩🏽‍💻 Autora
 
