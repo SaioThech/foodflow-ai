@@ -3,20 +3,28 @@ from .retriever import ReviewRetriever
 
 def build_context(results) -> str:
     return "\n".join(
-        f"Avaliação {item.rating}/5: {item.text}" for item in results
+        f"Avaliação {item.rating}/5: {item.text}"
+        for item in results
     )
 
 
-def answer_with_retrieval(query: str, top_k: int = 5) -> dict:
-    """RAG-ready interface: retrieve evidence before an LLM is called."""
+def answer_with_retrieval(query: str, top_k: int = 5, generate: bool = False) -> dict:
+    """Retrieve evidence and optionally pass it to a generative model."""
     retriever = ReviewRetriever.from_csv()
     results = retriever.search(query, top_k=top_k)
     context = build_context(results)
+    response = None
+
+    if generate:
+        from .llm import generate_answer
+        response = generate_answer(query, context)
+
     return {
         "query": query,
         "context": context,
         "sources": [item.review_id for item in results],
-        "next_step": "Enviar o contexto para um LLM e gerar a resposta fundamentada.",
+        "answer": response,
+        "mode": "rag+llm" if generate else "retrieval-only",
     }
 
 
