@@ -2,7 +2,7 @@
 
 ### Plataforma fictícia de delivery para desenvolvimento de soluções de Data & AI
 
-> Projeto 100% sintético criado para portfólio de **AI Engineer**. Os dados, clientes, restaurantes, entregadores e pedidos são fictícios e não representam o iFood ou qualquer outra empresa real.
+> Projeto 100% sintético criado para portfólio de **AI Engineer**. Os dados, clientes, restaurantes, entregadores e pedidos são fictícios e não representam nenhuma empresa real.
 
 ## 🎯 Objetivo
 
@@ -108,7 +108,7 @@ python src/eda.py
 
 ## ⚠️ Dados sintéticos
 
-Este projeto não utiliza dados privados, pessoais ou internos do iFood. A empresa **FoodFlow** é fictícia e foi criada exclusivamente para fins educacionais e de portfólio.
+Este projeto não utiliza dados privados, A empresa **FoodFlow** é fictícia e foi criada exclusivamente para fins educacionais e de portfólio.
 
 ## 👩🏽‍💻 Autora
 
