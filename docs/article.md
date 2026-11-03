@@ -1,39 +1,38 @@
-# FoodFlow AI: construindo uma solução de AI Engineering de ponta a ponta
+# FoodFlow AI: implementação de um pipeline de Engenharia de IA
 
-## Contexto
+## Escopo
 
-O FoodFlow AI é um projeto de portfólio baseado em uma empresa fictícia de delivery. A proposta é demonstrar como problemas de negócio podem ser transformados em uma solução técnica que percorre dados, Machine Learning, NLP, RAG e serving.
+FoodFlow AI é um projeto experimental de portfólio. O objetivo técnico é demonstrar um fluxo reproduzível que começa na geração de dados e termina em modelos avaliados e funcionalidades acessíveis por API. Todos os dados são sintéticos.
 
-## Dados sintéticos
+## Geração e análise de dados
 
-O projeto gera clientes, restaurantes, entregadores, pedidos, pagamentos e avaliações de forma reprodutível. Nenhum dado privado ou operacional real é utilizado.
+O módulo `data/generate_data.py` cria tabelas estruturadas e registros textuais usando uma semente fixa. O módulo `src/eda.py` calcula estatísticas agregadas, exporta tabelas de análise e gera um gráfico temporal.
 
-## Primeiro problema: cancelamento
+## Modelos preditivos
 
-O primeiro modelo estima a probabilidade de um pedido ser cancelado antes do desfecho. As variáveis usadas incluem horário, categoria, valor, distância, tempo de preparo, trânsito e pagamento.
+O pipeline de classificação usa Logistic Regression, com imputação de valores ausentes, padronização de variáveis numéricas e One-Hot Encoding de variáveis categóricas. A avaliação registra Accuracy, Precision, Recall, F1 e ROC-AUC.
 
-O pipeline separa variáveis numéricas e categóricas, aplica imputação e transformação e treina um classificador. A avaliação usa Precision, Recall, F1 e ROC-AUC para evitar depender somente de acurácia.
+O pipeline de regressão usa Random Forest Regressor. As métricas MAE, RMSE e R² permitem avaliar o erro de previsão e o ajuste do modelo.
 
-## Segundo problema: tempo de entrega
+## Processamento de linguagem natural
 
-O projeto também possui um modelo de regressão para estimar o tempo de entrega. Nesse caso, MAE, RMSE e R² ajudam a avaliar o erro em minutos e a capacidade explicativa do modelo.
+O baseline de NLP transforma texto em vetores TF-IDF e treina um classificador Logistic Regression. Há também um módulo opcional baseado em Transformers da Hugging Face. Essa etapa opcional requer dependências adicionais e pode exigir download de pesos.
 
-## NLP e Transformers
+## Recuperação de informação e RAG
 
-As avaliações dos clientes são usadas em um baseline de sentimento com TF-IDF e Logistic Regression. A arquitetura também possui uma etapa opcional com Hugging Face Transformers, mostrando a evolução de um baseline clássico para modelos pré-treinados.
+O retriever usa TF-IDF e similaridade de cosseno para localizar registros textuais relacionados à consulta. O módulo de QA organiza os resultados em contexto e pode, opcionalmente, encaminhá-los a um modelo generativo. A recuperação funciona sem instalar o modelo generativo.
 
-## RAG
+## API e validação
 
-O módulo de RAG começa recuperando avaliações relevantes com TF-IDF e similaridade de cosseno. Depois, um modelo generativo opcional recebe a pergunta e as evidências recuperadas para produzir uma resposta fundamentada.
+A API FastAPI disponibiliza health check, previsão de classificação e consulta de recuperação. O projeto inclui testes automatizados e um workflow GitHub Actions que verifica sintaxe, executa os testes, gera os dados, roda a análise exploratória e treina/avalia os modelos.
 
-Essa separação é importante: o sistema não precisa pedir ao LLM que memorize as avaliações. Primeiro recuperamos evidências; depois geramos a resposta.
+## Limitações
 
-## Engenharia e produção
+- Os dados são sintéticos e não permitem concluir como os modelos se comportariam em produção.
+- O baseline TF-IDF é uma abordagem lexical; não equivale a busca semântica por embeddings.
+- A geração com LLM é opcional e não faz parte do caminho obrigatório de CI.
+- Os modelos e relatórios são artefatos locais; os resultados devem ser reproduzidos antes de serem citados em uma apresentação ou candidatura.
 
-O projeto inclui testes automatizados, GitHub Actions, API FastAPI e Docker. Assim, o foco deixa de ser apenas treinar um modelo e passa a ser construir um sistema reproduzível.
+## Execução
 
-## Conclusão
-
-O FoodFlow AI representa uma evolução prática: dados → analytics → ML → NLP → Transformers → RAG → API → operação. Essa é a principal narrativa que quero demonstrar como estudante de Inteligência Artificial e candidata a uma trajetória de AI Engineer.
-
-> Observação: resultados numéricos devem ser atualizados a partir da execução do pipeline; o repositório não versiona artefatos gerados localmente.
+Consulte o README para instalar dependências e executar o pipeline na ordem correta.
