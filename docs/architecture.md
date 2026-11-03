@@ -1,27 +1,40 @@
-# 🏗️ Arquitetura FoodFlow AI
+# Arquitetura do FoodFlow AI
+
+## Visão geral
+
+O repositório implementa um pipeline experimental de Engenharia de IA com dados sintéticos. A execução cobre preparação de dados, análise exploratória, treinamento e avaliação de modelos, processamento de texto, recuperação de informação e disponibilização de funcionalidades por API.
 
 ```mermaid
-flowchart LR
-    A[Dados sintéticos] --> B[EDA]
-    A --> C[Feature Engineering]
-    C --> D[ML: Cancelamento]
-    D --> E[API FastAPI]
-    A --> F[Reviews]
-    F --> G[NLP baseline]
-    F --> H[Retriever TF-IDF]
-    H --> I[RAG / LLM]
-    D --> J[Relatórios e métricas]
-    G --> J
+flowchart TD
+    A[Dados sintéticos] --> B[Preparação e validação]
+    B --> C[EDA e métricas]
+    B --> D[Classificação]
+    B --> E[Regressão]
+    B --> F[Dados textuais]
+    F --> G[NLP: TF-IDF]
+    F --> H[Recuperação: TF-IDF]
+    H --> I[Contexto recuperado]
+    I --> J[LLM opcional]
+    D --> K[Artefatos e métricas]
+    E --> K
+    G --> K
+    D --> L[API FastAPI]
+    H --> M[API de consulta]
 ```
 
-## Camadas
+## Componentes
 
-1. **Data** — geração reprodutível de clientes, restaurantes, entregadores, pedidos, pagamentos e avaliações.
-2. **Analytics** — análise exploratória e indicadores operacionais.
-3. **ML** — previsão de cancelamento com pipeline de pré-processamento + Logistic Regression.
-4. **NLP** — classificação de sentimento como baseline e inferência opcional com Hugging Face.
-5. **RAG** — recuperação de avaliações relevantes antes da geração de uma resposta.
-6. **Serving** — API FastAPI e container Docker.
-7. **MLOps** — testes e execução automatizada via GitHub Actions.
+1. **Dados** — geração determinística de tabelas sintéticas para experimentos.
+2. **Análise** — estatísticas descritivas, agregações e relatórios exploratórios.
+3. **Classificação** — pipeline com imputação, codificação de variáveis categóricas e Logistic Regression.
+4. **Regressão** — pipeline de pré-processamento e Random Forest Regressor.
+5. **NLP** — baseline de classificação de texto com TF-IDF e Logistic Regression; inferência opcional com Transformers.
+6. **Recuperação e RAG** — busca lexical por TF-IDF e similaridade de cosseno; geração com LLM é opcional.
+7. **Serving** — endpoints FastAPI para health check, previsão de classificação e recuperação de texto.
+8. **Validação** — testes automatizados e workflow GitHub Actions.
 
-O projeto usa dados sintéticos para demonstrar arquitetura e engenharia sem expor dados pessoais ou operacionais reais.
+## Reprodutibilidade
+
+Os dados, modelos e relatórios são gerados durante a execução e não precisam ser versionados. A semente aleatória é definida no gerador para tornar a criação dos dados reproduzível.
+
+> Os dados são artificiais. Métricas obtidas com eles servem para validar o pipeline e não representam desempenho em dados reais.
