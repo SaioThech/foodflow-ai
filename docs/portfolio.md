@@ -1,35 +1,36 @@
-# 🎯 FoodFlow AI como projeto de portfólio
+# FoodFlow AI — evidências técnicas
 
-## O que este projeto demonstra
+## Competências demonstradas
 
-- Python aplicado a dados e IA.
-- Geração e documentação de dados sintéticos.
-- EDA e raciocínio orientado a negócio.
-- Pipeline de Machine Learning para previsão de cancelamento.
-- Avaliação com métricas apropriadas para classificação.
-- NLP para análise de avaliações.
-- Preparação de uma arquitetura RAG.
-- API para servir previsões.
-- Docker para empacotamento.
-- Testes automatizados e CI.
+- Geração reproduzível de dados sintéticos com Python e NumPy.
+- Manipulação e análise de dados com Pandas.
+- Análise exploratória e geração de relatórios.
+- Pré-processamento com scikit-learn Pipelines e ColumnTransformer.
+- Classificação e regressão supervisionadas.
+- Avaliação com métricas adequadas a cada tarefa.
+- Classificação de texto com TF-IDF.
+- Recuperação lexical e composição de contexto para RAG.
+- API REST com FastAPI.
+- Testes automatizados e integração contínua com GitHub Actions.
+- Empacotamento com Docker.
 
-## Evolução planejada
+## Mapa entre competência e implementação
 
-| Etapa | Evidência |
+| Área | Implementação |
 |---|---|
-| Dados | `data/generate_data.py` |
-| Analytics | `src/eda.py` |
-| ML | `src/train_cancellation.py` |
+| Geração de dados | `data/generate_data.py` |
+| Análise exploratória | `src/eda.py` |
+| Classificação | `src/train_cancellation.py` |
 | Avaliação | `src/evaluate_cancellation.py` |
+| Regressão | `src/train_delivery_time.py` |
 | NLP | `src/sentiment.py` |
-| Transformers | `src/nlp/huggingface_sentiment.py` |
-| RAG | `src/rag/` |
+| Transformers (opcional) | `src/nlp/huggingface_sentiment.py` |
+| Recuperação e RAG | `src/rag/` |
 | API | `api/main.py` |
-| MLOps | `.github/workflows/ci.yml` |
+| Testes | `tests/` |
+| CI | `.github/workflows/ci.yml` |
 | Container | `Dockerfile` |
 
-## Para uma candidatura de AI Engineer
+## Como apresentar o projeto
 
-A narrativa do projeto é: **dados → modelo → linguagem → recuperação → aplicação → operação**.
-
-Isso é mais forte para portfólio do que apresentar apenas notebooks isolados, porque mostra preocupação com engenharia e entrega de sistemas.
+Descreva somente o que foi executado e medido. Diferencie resultados de dados sintéticos de resultados obtidos em dados reais. Não informe métricas sem anexar a execução correspondente e o conjunto de teste utilizado.
